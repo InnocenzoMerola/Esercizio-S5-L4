@@ -1,33 +1,36 @@
 <?php
 
 include_once __DIR__ . "/interfaces/Prestito.php";
-// include_once __DIR__ . "/Libro.php";
-// include_once __DIR__ . "/Dvd.php";
+
 
 
 abstract class MaterialeBibliotecario implements Prestito
 {
-
-    public static $contatoreMateriali = 0;
-
+    static protected $contatoreMateriali = 0;
+    protected $titolo;
+    protected $annoPubblicazione;
     
-    public $titolo;
-    public $annoPubblicazione;
-
-   function __construct($titolo, $annoPubblicazione)
-   {
-    $this->titolo = $titolo;
-    $this->annoPubblicazione = $annoPubblicazione;
-    self::$contatoreMateriali++;
-   }
-
-   public function presta()
-   {
-       echo self::$contatoreMateriali--;
-   }
-
-   public function restituisci()
+    public function __construct($titolo, $annoPubblicazione)
     {
-        echo self::$contatoreMateriali++;
+        $this->titolo = $titolo;
+        $this->annoPubblicazione = $annoPubblicazione;
+        self::$contatoreMateriali++;
+    }
+
+    public function presta()
+    {
+        self::$contatoreMateriali--;
+        static::$contatoreMateriali--;
+    }
+
+    public function restituisci()
+    {
+        self::$contatoreMateriali++;
+        static::$contatoreMateriali++;
+    }
+
+    static public function contaMateriali()
+    {
+       return self::$contatoreMateriali;
     }
 }
